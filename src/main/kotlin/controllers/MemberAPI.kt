@@ -18,10 +18,17 @@ class MemberAPI {
     fun listMember() : String{
         return formatListString(members)
     }
+    fun updateMember(indexToUpdate: Int, member: Member?) : Boolean{
+        val foundMember = findMember(indexToUpdate)
+        if((foundMember !=null)&& (member != null)){
+            foundMember.memberName = member.memberName
+            foundMember.memberContact = member.memberContact
+            foundMember.memberAddress = member.memberAddress
+            return true
+        }
+        return false
+    }
 
-  /*
-    fun updateMember(indexToUpdate: Int, member: Member?) : Boolean{}
-   */
 
     fun deleteMember(indexToDelete : Int): Member? {
         return if (isValidListIndex(indexToDelete, members)){
@@ -29,13 +36,18 @@ class MemberAPI {
         } else null
     }
 
-    fun numberOfmembers(): Int {
+    fun numberOfMembers(): Int {
         return members.size
     }
-
+    fun findMember(index: Int): Member? {
+        return if (isValidListIndex(index, members)) {
+            members[index]
+        } else null
+    }
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
     fun isValidIndex(index: Int) :Boolean{
         return isValidListIndex(index, members);
     }

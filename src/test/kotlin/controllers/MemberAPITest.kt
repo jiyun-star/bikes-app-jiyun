@@ -2,8 +2,7 @@ package controllers
 
 import models.Member
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import kotlin.test.assertEquals
 
 class MemberAPITest {
