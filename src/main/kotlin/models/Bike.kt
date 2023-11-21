@@ -5,6 +5,5 @@ data class Bike (
     var bikeColor: String,
     var bikeSize: Int,
     var startDate: String,
-    var endDate: String,
-    var isBikeElectric: Boolean = false
+    var endDate: String
 )
