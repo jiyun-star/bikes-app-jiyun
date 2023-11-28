@@ -1,12 +1,13 @@
 import controllers.MemberAPI
 import models.Member
+import mu.KotlinLogging
 import persistence.JSONSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
 
-private val memberAPI = MemberAPI(JSONSerializer(File("Members.json")))
+private val memberAPI = MemberAPI()
 fun main(args: Array<String>) {
     runMenu()
 }
@@ -18,7 +19,7 @@ fun mainMenu(): Int {
             >2. List all the members
             >3. Update member information
             >4. delete member
-            >5. Make member VIP (update isvip attribute)
+            >5. Upgrade membership
             >
             >Manage Bike
             >6. add bike to a member
@@ -35,6 +36,7 @@ fun runMenu(){
             2 -> listMembers()
             3 -> updateMembers()
             4 -> deleteMember()
+            5 -> upgradeMembership()
             0 -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -52,8 +54,8 @@ fun addMember(){
         println("Add Failed")
     }
 }
-fun listMembers(){
-    memberAPI.listMember()
+fun listMembers() {
+    println(memberAPI.listMember())
 }
 fun updateMembers(){
     listMembers()
@@ -85,7 +87,20 @@ fun deleteMember(){
         }
     }
 }
-
+fun upgradeMembership(){
+    listMembers()
+    if (memberAPI.numberOfMembers() > 0) {
+        val indexToUpgrade = readNextInt("Enter the index of the member to upgrade: ")
+        if(memberAPI.isValidIndex(indexToUpgrade)) {
+            memberAPI.upgradeMembership(indexToUpgrade)
+               println("VIP enroll successed")
+            } else {
+                println("Upgrade is not successful")
+            }
+        } else {
+            println("There are no member")
+        }
+    }
 
     fun exitApp() {
         System.exit(0)

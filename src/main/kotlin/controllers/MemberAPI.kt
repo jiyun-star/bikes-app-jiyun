@@ -4,8 +4,8 @@ import models.Member
 
 class MemberAPI {
     private var members = arrayListOf<Member>()
-    private fun formatListString(MembersToFormat : List<Member>) : String =
-        MembersToFormat
+    private fun formatListString(membersToFormat : List<Member>) : String =
+        membersToFormat
             .joinToString (separator = "\n") { member ->
                 members.indexOf(member).toString() + ": " + member.toString() }
 
@@ -15,9 +15,14 @@ class MemberAPI {
         return members.add(member)
     }
 
-    fun listMember() : String{
-        return formatListString(members)
+    fun listMember() : String {
+        return if (members.isEmpty()) {
+            "No members stored"
+        } else {
+            formatListString(members)
+        }
     }
+
     fun updateMember(indexToUpdate: Int, member: Member?) : Boolean{
         val foundMember = findMember(indexToUpdate)
         if((foundMember !=null)&& (member != null)){
@@ -28,6 +33,14 @@ class MemberAPI {
         }
         return false
     }
+
+    fun upgradeMembership(indexToUpgrade: Int): Boolean{
+        val foundMember = findMember(indexToUpgrade)
+        if(foundMember != null) {
+            foundMember.isMemberVIP = true
+        }
+        return false
+        }
 
 
     fun deleteMember(indexToDelete : Int): Member? {
