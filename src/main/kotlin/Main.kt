@@ -1,4 +1,5 @@
 import controllers.MemberAPI
+import models.Bike
 import models.Member
 import mu.KotlinLogging
 import persistence.JSONSerializer
@@ -15,16 +16,17 @@ fun mainMenu(): Int {
     return ScannerInput.readNextInt(
         """
             >Manage Member 
-            >1. Create the member
-            >2. List all the members
-            >3. Update member information
-            >4. delete member
-            >5. Upgrade membership
+            > 1. Create the member
+            > 2. List all the members
+            > 3. Update member information
+            > 4. delete member
+            > 5. Upgrade membership
             >
             >Manage Bike
-            >6. add bike to a member
-            >7. update bike statue 
-            >8. return the bike
+            > 6. add bike to a member
+            > 7. delay rental time
+            > 8. return the bike
+            > 
          > ==>> """.trimMargin(">")
     )
 }
@@ -37,11 +39,13 @@ fun runMenu(){
             3 -> updateMembers()
             4 -> deleteMember()
             5 -> upgradeMembership()
+            6 -> addBike()
             0 -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
 }
+///////////////////Member menu/////////////////////
 fun addMember(){
     val memberName = ScannerInput.readNextLine("Enter a Member name: ")
     val memberContact = ScannerInput.readNextInt("Enter a Member contact: ")
@@ -101,7 +105,42 @@ fun upgradeMembership(){
             println("There are no member")
         }
     }
+//////////////////bike menu////////////////
 
-    fun exitApp() {
-        System.exit(0)
+private fun addBike() {
+    val member: Member? = askUserToChooseMemeber()
+    if (member != null) {
+        if (member.addBike(Bike(
+                bikeColor = readNextLine("bike color:"),
+                bikeSize = readNextInt("bike size: "),
+                startDate = readNextLine("start date: "),
+                endDate = readNextLine("end date: ")
+            )))
+            println("Bike rental successed")
+        else println("You didnt get bike")
     }
+}
+
+//////////////helper
+private fun askUserToChooseMemeber(): Member? {
+    listMembers()
+    if (memberAPI.numberOfMembers() > 0) {
+        val member = memberAPI.findMember(readNextInt("Enter the member id"))
+        if (member != null) return member
+        else println("Member is not valid")
+    }
+    return null
+}
+private fun askUserToChooseBike(member: Member) : Bike? {
+    if (member.numberOfBikes() > 0) {
+        print(member.listBikes())
+        return member.findOne(readNextInt("\nEnter the id of the bike: "))
+    } else {
+        println("No bikes for chosen member")
+        return null
+    }
+}
+
+fun exitApp() {
+    System.exit(0)
+}
