@@ -26,10 +26,9 @@ data class Member(var memberName: String,
         return bikes.removeIf { bike -> bike.bikeId == id }
     }
 
-    fun updateDate(id: Int, newBike: Bike): Boolean {
+    fun update(id: Int, newBike: Bike): Boolean {
         val foundBike = findOne(id)
         if (foundBike != null) {
-            foundBike.startDate = newBike.startDate
             foundBike.endDate = newBike.endDate
             return true
         }
