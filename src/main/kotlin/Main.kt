@@ -41,6 +41,7 @@ fun runMenu(){
             5 -> upgradeMembership()
             6 -> addBike()
             7 -> extendBike()
+            8 -> returnBike()
             0 -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -137,12 +138,28 @@ fun extendBike() {
     }
 }
 
+fun returnBike() {
+    val member: Member? = askUserToChooseMemeber()
+    if (member != null) {
+        val bike: Bike? = askUserToChooseBike(member)
+        if (bike != null) {
+            val isReturned = member.delete(bike.bikeId)
+            if (isReturned) {
+                println("Bike returned successful!")
+            } else {
+                println("Bike returned failed")
+            }
+        }
+
+    }
+}
+
 
 //////////////helper
 private fun askUserToChooseMemeber(): Member? {
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
-        val member = memberAPI.findMember(readNextInt("Enter the member id"))
+        val member = memberAPI.findMember(readNextInt("Enter the member id: "))
         if (member != null) return member
         else println("Member is not valid")
     }
