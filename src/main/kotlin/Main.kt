@@ -23,8 +23,8 @@ fun mainMenu(): Int {
             > 5. Upgrade membership
             >
             >Manage Bike
-            > 6. add bike to a member
-            > 7. delay rental time
+            > 6. rent a bike
+            > 7. extend rental time
             > 8. return the bike
             > 
          > ==>> """.trimMargin(">")
@@ -40,6 +40,7 @@ fun runMenu(){
             4 -> deleteMember()
             5 -> upgradeMembership()
             6 -> addBike()
+            7 -> extendBike()
             0 -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -120,6 +121,22 @@ private fun addBike() {
         else println("You didnt get bike")
     }
 }
+
+fun extendBike() {
+    val member: Member? = askUserToChooseMemeber()
+    if (member != null){
+        val bike: Bike? = askUserToChooseBike(member)
+        if(bike != null) {
+            val newEndDate = readNextLine("Enter the new delay date: ")
+            if (member.update(bike.bikeId, Bike(bike.bikeId,bike.bikeColor,bike.bikeSize,bike.startDate, endDate = newEndDate))) {
+                println("Bike got delayed")
+            } else {
+                println("Failed")
+            }
+        }
+    }
+}
+
 
 //////////////helper
 private fun askUserToChooseMemeber(): Member? {
