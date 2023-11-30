@@ -57,6 +57,12 @@ class MemberAPI {
             members[index]
         } else null
     }
+
+    fun searchMembersByName(searchString : String) =
+        formatListString(
+            members.filter { member -> member.memberName.contains(searchString, ignoreCase = true)}
+        )
+
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }

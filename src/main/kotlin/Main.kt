@@ -27,6 +27,9 @@ fun mainMenu(): Int {
             > 7. extend rental time
             > 8. return the bike
             > 
+            >Report Member
+            > 10. Search for all members(by names)
+            > 
          > ==>> """.trimMargin(">")
     )
 }
@@ -42,6 +45,7 @@ fun runMenu(){
             6 -> addBike()
             7 -> extendBike()
             8 -> returnBike()
+            10 -> searchMember()
             0 -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -107,6 +111,17 @@ fun upgradeMembership(){
             println("There are no member")
         }
     }
+
+fun searchMember() {
+    val searchName = readNextLine("Enter the name of number: ")
+    val searchResults = memberAPI.searchMembersByName(searchName)
+    if (searchResults.isEmpty()) {
+        println("No members found")
+    } else {
+        println(searchResults)
+    }
+
+}
 //////////////////bike menu////////////////
 
 private fun addBike() {
