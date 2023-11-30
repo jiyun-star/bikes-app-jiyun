@@ -10,6 +10,7 @@ data class Member(var memberName: String,
                   var isMemberVIP: Boolean = false,
                   var bikes : MutableSet<Bike> = mutableSetOf())
     {
+
     private var lastBikeId = 0
     private fun getBikeId() = lastBikeId++
     fun numberOfBikes() = bikes.size
