@@ -43,7 +43,7 @@ data class Member(var memberId: Int =0,
         else utils.Utilities.formatSetString(bikes)
 
     override fun toString(): String {
-        val VIP = if(isMemberVIP) "⭐" else " "
-        return "$VIP$memberName$VIP ☎($memberContact),🏠︎($memberAddress) \n ${listBikes()}"
+        val vip = if(isMemberVIP) "✨" else ' '
+        return "$vip$memberName$vip ☎($memberContact),🏠︎($memberAddress) \n ${listBikes()}"
     }
 }
