@@ -155,10 +155,10 @@ private fun addBike() {
     val member: Member? = askUserToChooseMemeber()
     if (member != null) {
         if (member.addBike(Bike(
-                bikeColor = readNextLine("bike color:"),
-                bikeSize = readNextInt("bike size: "),
-                startDate = readNextLine("start date: "),
-                endDate = readNextLine("end date: ")
+                bikeColor = readNextLine("bike color(R,G,B):"),
+                bikeSize = readNextInt("bike size(16,18,20): "),
+                startDate = readNextLine("start date(yyyy-mm-dd): "),
+                endDate = readNextLine("end date(yyyy-mm-dd): ")
             )))
             println("Bike rental successed")
         else println("You didnt get bike")
@@ -170,7 +170,7 @@ fun extendBike() {
     if (member != null){
         val bike: Bike? = askUserToChooseBike(member)
         if(bike != null) {
-            val newEndDate = readNextLine("Enter the new delay date: ")
+            val newEndDate = readNextLine("Enter the new delay date(yyyy-mm-dd): ")
             if (member.update(bike.bikeId, Bike(bike.bikeId,bike.bikeColor,bike.bikeSize,bike.startDate, endDate = newEndDate))) {
                 println("Bike got delayed")
             } else {

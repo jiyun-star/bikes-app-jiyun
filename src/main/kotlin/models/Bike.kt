@@ -6,4 +6,8 @@ data class Bike (
     var bikeSize: Int,
     var startDate: String,
     var endDate: String
-)
+){
+    override fun toString(): String {
+        return "$bikeId : $bikeColor color, $bikeSize inch, $startDate ~ $endDate \n"
+    }
+}
