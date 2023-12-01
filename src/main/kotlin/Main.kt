@@ -60,9 +60,9 @@ fun mainMenu() = readNextInt(
 
 ///////////////////Member menu/////////////////////
 fun addMember(){
-    val memberName = ScannerInput.readNextLine("Enter a Member name: ")
-    val memberContact = ScannerInput.readNextInt("Enter a Member contact: ")
-    val memberAddress = ScannerInput.readNextLine("Enter a Member address: ")
+    val memberName = readNextLine("Enter a Member name: ")
+    val memberContact = readNextInt("Enter a Member contact: ")
+    val memberAddress = readNextLine("Enter a Member address: ")
     val isAdded = memberAPI.add(Member(memberName, memberContact, memberAddress, false))
 
     if (isAdded) {
@@ -72,8 +72,28 @@ fun addMember(){
     }
 }
 fun listMembers() {
-    println(memberAPI.listMember())
+    if (memberAPI.numberOfMembers() > 0) {
+        val option = readNextInt(
+            """
+                >1. List ALL members
+                >2. List VIP members
+                >3. List normal members
+                >==>> """.trimMargin(">")
+        )
+        when (option) {
+            1 -> listAllMembers()
+            2 -> listVIPs()
+            3 -> listNormalMembers()
+            else -> println("Invalid option entered")
+        }
+    } else {
+        println("Option invalid - No members stored")
+    }
 }
+fun listAllMembers() = println(memberAPI.listMember())
+fun listVIPs() = println(memberAPI.listVIPs())
+fun listNormalMembers() = println(memberAPI.listNormalMembers())
+
 fun updateMembers(){
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
@@ -105,8 +125,8 @@ fun deleteMember(){
     }
 }
 fun upgradeMembership(){
-    listMembers()
-    if (memberAPI.numberOfMembers() > 0) {
+    listNormalMembers()
+    if (memberAPI.numberOfNormalMembers() > 0) {
         val indexToUpgrade = readNextInt("Enter the index of the member to upgrade: ")
         if(memberAPI.isValidIndex(indexToUpgrade)) {
             memberAPI.upgradeMembership(indexToUpgrade)

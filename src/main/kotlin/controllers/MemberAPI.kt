@@ -8,18 +8,19 @@ class MemberAPI {
     private fun formatListString(membersToFormat : List<Member>) : String =
         membersToFormat.joinToString (separator = "\n") { member ->
             members.indexOf(member).toString() + ": " + member.toString() }
-
+    // ----------------------------------------------
+    //  For Managing the id internally in the program
+    // ----------------------------------------------
+    private var lastId = 0
+    private fun getId() = lastId++
+    // ----------------------------------------------
+    //  CRUD methods for member arraylist
+    // ----------------------------------------------
     fun add(member: Member) : Boolean{
         return members.add(member)
     }
 
-    fun listMember() : String {
-        return if (members.isEmpty()) {
-            "no members stored"
-        } else {
-            formatListString(members)
-        }
-    }
+
 
     fun updateMember(indexToUpdate: Int, member: Member?) : Boolean{
         val foundMember = findMember(indexToUpdate)
@@ -46,10 +47,27 @@ class MemberAPI {
             members.removeAt(indexToDelete)
         } else null
     }
-
-    fun numberOfMembers(): Int {
-        return members.size
-    }
+    // ----------------------------------------------
+    //  Listing methods for member arraylist
+    // ----------------------------------------------
+    fun listMember() =
+         if (members.isEmpty()) "no members stored"
+         else formatListString(members)
+    fun listVIPs() =
+        if (numberOfVIPs() ==0) "No VIP members"
+        else formatListString(members.filter {member: Member -> member.isMemberVIP})
+    fun listNormalMembers() =
+        if (numberOfNormalMembers() == 0) "No normal members"
+        else formatListString(members.filter {member: Member -> !member.isMemberVIP})
+    // ----------------------------------------------
+    //  COUNTING METHODS FOR NOTE ArrayList
+    // ----------------------------------------------
+    fun numberOfMembers() = members.size
+    fun numberOfVIPs() = members.count{member: Member -> member.isMemberVIP }
+    fun numberOfNormalMembers() = members.count{member: Member -> !member.isMemberVIP  }
+    // ----------------------------------------------
+    //  SEARCHING METHODS
+    // ----------------------------------------------
     fun findMember(index: Int): Member? {
         return if (isValidListIndex(index, members)) {
             members[index]
