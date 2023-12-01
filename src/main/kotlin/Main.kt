@@ -63,7 +63,7 @@ fun addMember(){
     val memberName = readNextLine("Enter a Member name: ")
     val memberContact = readNextInt("Enter a Member contact: ")
     val memberAddress = readNextLine("Enter a Member address: ")
-    val isAdded = memberAPI.add(Member(memberName, memberContact, memberAddress, false))
+    val isAdded = memberAPI.add(Member(memberName= memberName , memberContact = memberContact, memberAddress = memberAddress))
 
     if (isAdded) {
         println("Added Successfully")
@@ -75,9 +75,9 @@ fun listMembers() {
     if (memberAPI.numberOfMembers() > 0) {
         val option = readNextInt(
             """
-                >1. List ALL members
-                >2. List VIP members
-                >3. List normal members
+                >1. List ALL members 🧑,⭐🧑⭐
+                >2. List VIP members ⭐🧑⭐
+                >3. List normal members 🧑
                 >==>> """.trimMargin(">")
         )
         when (option) {
@@ -102,7 +102,7 @@ fun updateMembers(){
             val memberName = readNextLine("Enter a name:" )
             val memberContact = readNextInt("Enter number: ")
             val memberAddress = readNextLine("Enter address: ")
-            if(memberAPI.updateMember(indexToUpdate, Member(memberName,memberContact,memberAddress,false))) {
+            if(memberAPI.updateMember(indexToUpdate, Member(0,memberName,memberContact,memberAddress,false))) {
                 println("$memberName information updated")
             } else{
                 println("update failed")

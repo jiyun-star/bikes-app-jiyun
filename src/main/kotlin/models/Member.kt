@@ -1,25 +1,25 @@
 package models
 
-
-
-
-
-data class Member(var memberName: String,
+data class Member(var memberId: Int =0,
+                  var memberName: String,
                   var memberContact: Int,
                   var memberAddress: String,
                   var isMemberVIP: Boolean = false,
                   var bikes : MutableSet<Bike> = mutableSetOf())
     {
-        // ----------------------------------------------
-        //  For Managing the id internally in the program
-        // ----------------------------------------------
+    // ----------------------------------------------
+    //  For Managing the id internally in the program
+    // ----------------------------------------------
     private var lastBikeId = 0
     private fun getBikeId() = lastBikeId++
+
     fun numberOfBikes() = bikes.size
     fun findOne(id: Int): Bike? {
         return bikes.find { bike -> bike.bikeId == id }
     }
-
+        // ----------------------------------------------
+        //  CRUD for bike
+        // ----------------------------------------------
     fun addBike(bike: Bike): Boolean {
         bike.bikeId = getBikeId()
         return bikes.add(bike)
@@ -42,4 +42,8 @@ data class Member(var memberName: String,
         if (bikes.isEmpty()) "NO BIKES ADDED"
         else utils.Utilities.formatSetString(bikes)
 
+    override fun toString(): String {
+        val VIP = if(isMemberVIP) "⭐" else " "
+        return "$VIP$memberName$VIP ☎($memberContact),🏠︎($memberAddress) \n ${listBikes()}"
+    }
 }
