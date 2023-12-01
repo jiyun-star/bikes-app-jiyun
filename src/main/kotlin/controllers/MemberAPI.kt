@@ -17,13 +17,11 @@ class MemberAPI {
     //  CRUD methods for member arraylist
     // ----------------------------------------------
     fun add(member: Member) : Boolean{
+        member.memberId = getId()
         return members.add(member)
     }
-
-
-
-    fun updateMember(indexToUpdate: Int, member: Member?) : Boolean{
-        val foundMember = findMember(indexToUpdate)
+    fun updateMember(id: Int, member: Member?) : Boolean{
+        val foundMember = findMember(id)
         if((foundMember !=null)&& (member != null)){
             foundMember.memberName = member.memberName
             foundMember.memberContact = member.memberContact
@@ -33,20 +31,15 @@ class MemberAPI {
         return false
     }
 
-    fun upgradeMembership(indexToUpgrade: Int): Boolean{
-        val foundMember = findMember(indexToUpgrade)
-        if(foundMember != null) {
-            foundMember.isMemberVIP = true
+    fun upgradeMembership(id: Int): Boolean{
+        val foundMember = findMember(id)
+        if((foundMember != null) && (!foundMember.isMemberVIP)) {
+            return true
         }
         return false
-        }
-
-
-    fun deleteMember(indexToDelete : Int): Member? {
-        return if (isValidListIndex(indexToDelete, members)){
-            members.removeAt(indexToDelete)
-        } else null
     }
+    fun deleteMember(id : Int) = members.removeIf{member -> member.memberId == id}
+
     // ----------------------------------------------
     //  Listing methods for member arraylist
     // ----------------------------------------------
@@ -68,22 +61,11 @@ class MemberAPI {
     // ----------------------------------------------
     //  SEARCHING METHODS
     // ----------------------------------------------
-    fun findMember(index: Int): Member? {
-        return if (isValidListIndex(index, members)) {
-            members[index]
-        } else null
-    }
+    fun findMember(id: Int)= members.find {member-> member.memberId == id }
 
     fun searchMembersByName(searchString : String) =
         formatListString(
             members.filter { member -> member.memberName.contains(searchString, ignoreCase = true)}
         )
 
-    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
-        return (index >= 0 && index < list.size)
-    }
-
-    fun isValidIndex(index: Int) :Boolean{
-        return isValidListIndex(index, members);
-    }
 }
