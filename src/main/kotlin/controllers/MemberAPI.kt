@@ -17,7 +17,7 @@ class MemberAPI {
 
     fun listMember() : String {
         return if (members.isEmpty()) {
-            "No members stored"
+            "no members stored"
         } else {
             formatListString(members)
         }
