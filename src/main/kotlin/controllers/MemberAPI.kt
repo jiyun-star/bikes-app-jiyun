@@ -30,10 +30,10 @@ class MemberAPI {
         }
         return false
     }
-
     fun upgradeMembership(id: Int): Boolean{
         val foundMember = findMember(id)
         if((foundMember != null) && (!foundMember.isMemberVIP)) {
+            foundMember.isMemberVIP = true
             return true
         }
         return false
