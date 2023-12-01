@@ -4,6 +4,7 @@ import models.Member
 import mu.KotlinLogging
 import persistence.JSONSerializer
 import utils.ScannerInput
+import utils.ScannerInput.readNextChar
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
@@ -97,46 +98,42 @@ fun listNormalMembers() = println(memberAPI.listNormalMembers())
 fun updateMembers(){
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
-        val indexToUpdate = readNextInt("Enter the index of the member to update: ")
-        if (memberAPI.isValidIndex(indexToUpdate)) {
+        val id = readNextInt("Enter the index of the member to update: ")
+        if (memberAPI.findMember(id) != null) {
             val memberName = readNextLine("Enter a name:" )
             val memberContact = readNextInt("Enter number: ")
             val memberAddress = readNextLine("Enter address: ")
-            if(memberAPI.updateMember(indexToUpdate, Member(0,memberName,memberContact,memberAddress,false))) {
+            if(memberAPI.updateMember(id, Member(0,memberName,memberContact,memberAddress,false))) {
                 println("$memberName information updated")
             } else{
                 println("update failed")
             }
-        } else{
-            println("There are no member for this index number ")
-        }
+        } else println("There are no member for this index number ")
+
     }
 }
 fun deleteMember(){
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
-        val indexToDelete = readNextInt("Enter the index of the member to delete: ")
-        val memberToDelete = memberAPI.deleteMember(indexToDelete)
-        if (memberToDelete != null) {
-            "${memberToDelete.memberName} deleted"
-        } else{
+        val id = readNextInt("Enter the index of the member to delete: ")
+        val memberToDelete = memberAPI.deleteMember(id)
+        if (memberToDelete)
+            println ("deleted successful")
+        else
             println("Delete is not successful")
-        }
+
     }
 }
 fun upgradeMembership(){
     listNormalMembers()
     if (memberAPI.numberOfNormalMembers() > 0) {
-        val indexToUpgrade = readNextInt("Enter the index of the member to upgrade: ")
-        if(memberAPI.isValidIndex(indexToUpgrade)) {
-            memberAPI.upgradeMembership(indexToUpgrade)
-               println("VIP enroll successed")
-            } else {
-                println("Upgrade is not successful")
-            }
-        } else {
-            println("There are no member")
+        val id = readNextInt("Enter the index of the member to upgrade: ")
+        if(memberAPI.upgradeMembership(id))
+            println("VIP enroll succeed")
+        else
+            println("Upgrade is not successful")
         }
+    else { println("There are no member") }
     }
 
 fun searchMember() {
@@ -150,9 +147,8 @@ fun searchMember() {
 
 }
 //////////////////bike menu////////////////
-
 private fun addBike() {
-    val member: Member? = askUserToChooseMemeber()
+    val member: Member? = askUserToChooseMember()
     if (member != null) {
         if (member.addBike(Bike(
                 bikeColor = readNextLine("bike color(R,G,B):"),
@@ -166,7 +162,7 @@ private fun addBike() {
 }
 
 fun extendBike() {
-    val member: Member? = askUserToChooseMemeber()
+    val member: Member? = askUserToChooseMember()
     if (member != null){
         val bike: Bike? = askUserToChooseBike(member)
         if(bike != null) {
@@ -181,7 +177,7 @@ fun extendBike() {
 }
 
 fun returnBike() {
-    val member: Member? = askUserToChooseMemeber()
+    val member: Member? = askUserToChooseMember()
     if (member != null) {
         val bike: Bike? = askUserToChooseBike(member)
         if (bike != null) {
@@ -198,7 +194,7 @@ fun returnBike() {
 
 
 //////////////helper
-private fun askUserToChooseMemeber(): Member? {
+private fun askUserToChooseMember(): Member? {
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val member = memberAPI.findMember(readNextInt("Enter the member id: "))
