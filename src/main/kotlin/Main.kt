@@ -9,11 +9,27 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 
 private val memberAPI = MemberAPI()
-fun main(args: Array<String>) {
-    runMenu()
+fun main() = runMenu()
+fun runMenu(){
+    do {
+        when (val option = mainMenu()) {
+            1 -> addMember()
+            2 -> listMembers()
+            3 -> updateMembers()
+            4 -> deleteMember()
+            5 -> upgradeMembership()
+
+            6 -> addBike()
+            7 -> extendBike()
+            8 -> returnBike()
+
+            10 -> searchMember()
+            0 -> exitApp()
+            else -> System.out.println("Invalid option entered: ${option}")
+        }
+    } while (true)
 }
-fun mainMenu(): Int {
-    return ScannerInput.readNextInt(
+fun mainMenu() = readNextInt(
         """
 
 ██████╗░██╗██╗░░██╗███████╗░░░░░░░░██████╗░███████╗███╗░░██╗████████╗░█████╗░██╗░░░░░░░░░░░░░░█████╗░██████╗░██████╗░
@@ -23,42 +39,25 @@ fun mainMenu(): Int {
 ██████╦╝██║██║░╚██╗███████╗░░░░░░░░██║░░██║███████╗██║░╚███║░░░██║░░░██║░░██║███████╗░░░░░░░░██║░░██║██║░░░░░██║░░░░░
 ╚═════╝░╚═╝╚═╝░░╚═╝╚══════╝░░░░░░░░╚═╝░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░░░░╚═╝░░╚═╝╚═╝░░░░░╚═╝░░░░░
 >
-            >Manage Member 
+            >🧑𝕞𝕒𝕟𝕒𝕘𝕖 𝕞𝕖𝕞𝕓𝕖𝕣🧑           
             >  1. Create the member
             >  2. List all the members
             >  3. Update member information
-            >  4. delete member
+            >  4. Delete member
             >  5. Upgrade membership
             >
-            >Manage Bike
-            >  6. rent a bike
-            >  7. extend rental time
-            >  8. return the bike
+            >🚲𝕞𝕒𝕟𝕒𝕘𝕖 𝕓𝕚𝕜𝕖🚲
+            >  6. Rent a bike
+            >  7. Extend rental time
+            >  8. Return the bike
             > 
-            >Report Member
+            >📝𝕣𝕖𝕡𝕠𝕣𝕥📝
             >  10. Search for all members(by names)
-            > 
+            >
+            >  0. EXIT🚪🏃
          > ==>> """.trimMargin(">")
     )
-}
-fun runMenu(){
-    do {
-        val option = mainMenu()
-        when(option){
-            1 -> addMember()
-            2 -> listMembers()
-            3 -> updateMembers()
-            4 -> deleteMember()
-            5 -> upgradeMembership()
-            6 -> addBike()
-            7 -> extendBike()
-            8 -> returnBike()
-            10 -> searchMember()
-            0 -> exitApp()
-            else -> System.out.println("Invalid option entered: ${option}")
-        }
-    } while (true)
-}
+
 ///////////////////Member menu/////////////////////
 fun addMember(){
     val memberName = ScannerInput.readNextLine("Enter a Member name: ")

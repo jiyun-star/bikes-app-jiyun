@@ -6,9 +6,8 @@ class MemberAPI {
 
     private var members = arrayListOf<Member>()
     private fun formatListString(membersToFormat : List<Member>) : String =
-        membersToFormat
-            .joinToString (separator = "\n") { member ->
-                members.indexOf(member).toString() + ": " + member.toString() }
+        membersToFormat.joinToString (separator = "\n") { member ->
+            members.indexOf(member).toString() + ": " + member.toString() }
 
     fun add(member: Member) : Boolean{
         return members.add(member)
