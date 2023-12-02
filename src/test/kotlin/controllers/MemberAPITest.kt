@@ -144,11 +144,11 @@ class MemberAPITest {
             assertNull(populatedMembers!!.deleteMember(6))
         }
         @Test
-        fun `deleting member that exists delete and returns deleted object`(){
+        fun `deleting member that exists delete`(){
             assertEquals(5, populatedMembers!!.numberOfMembers())
-            assertEquals(spainbeach, populatedMembers!!.deleteMember(1))
+            assertTrue(populatedMembers!!.deleteMember(1))
             assertEquals(4, populatedMembers!!.numberOfMembers())
-            assertEquals(earthquate, populatedMembers!!.deleteMember(2))
+            assertTrue(populatedMembers!!.deleteMember(2))
             assertEquals(3, populatedMembers!!.numberOfMembers())
 
         }
