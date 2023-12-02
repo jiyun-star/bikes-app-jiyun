@@ -47,10 +47,10 @@ class MemberAPI {
          if (members.isEmpty()) "no members stored"
          else formatListString(members)
     fun listVIPs() =
-        if (numberOfVIPs() ==0) "No VIP members"
+        if (numberOfVIPs() ==0) "No members stored"
         else formatListString(members.filter {member: Member -> member.isMemberVIP})
     fun listNormalMembers() =
-        if (numberOfNormalMembers() == 0) "No normal members"
+        if (numberOfNormalMembers() == 0) "No members stored"
         else formatListString(members.filter {member: Member -> !member.isMemberVIP})
     // ----------------------------------------------
     //  COUNTING METHODS FOR NOTE ArrayList
