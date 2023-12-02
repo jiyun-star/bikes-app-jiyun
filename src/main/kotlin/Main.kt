@@ -93,7 +93,7 @@ fun listVIPs() = println(memberAPI.listVIPs())
 fun listNormalMembers() = println(memberAPI.listNormalMembers())
 
 fun updateMembers() {
-    listMembers()
+    listAllMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val id = readNextInt("Enter the index of the member to update: ")
         if (memberAPI.findMember(id) != null) {
@@ -111,7 +111,7 @@ fun updateMembers() {
     }
 }
 fun deleteMember() {
-    listMembers()
+    listAllMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val id = readNextInt("Enter the index of the member to delete: ")
         val memberToDelete = memberAPI.deleteMember(id)
