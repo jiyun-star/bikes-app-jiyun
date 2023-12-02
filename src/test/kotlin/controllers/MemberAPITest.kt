@@ -41,7 +41,9 @@ class MemberAPITest {
         populatedMembers = null
         emptyMembers = null
     }
-
+    //////////////////////////////
+    ///////CRUD JUNIT TESTING/////
+    //////////////////////////////
     @Nested
     inner class AddMembers {
         @Test
@@ -65,7 +67,6 @@ class MemberAPITest {
 
     @Nested
     inner class ListMembers {
-
         @Test
         fun `listAllMembers returns No Members Stored message when ArrayList is empty`() {
             assertEquals(0, emptyMembers!!.numberOfMembers())
@@ -133,6 +134,13 @@ class MemberAPITest {
             assertEquals("Samsam", populatedMembers!!.findMember(4)!!.memberName)
             assertEquals(103030,populatedMembers!!.findMember(4)!!.memberContact)
             assertEquals("Wexford",populatedMembers!!.findMember(4)!!.memberAddress)
+        }
+        @Test
+        fun `upgrading membership for normalmember`(){
+            assertEquals(testing,populatedMembers!!.findMember(3))
+            assertEquals(false,populatedMembers!!.findMember(3)!!.isMemberVIP)
+            assertTrue(populatedMembers!!.upgradeMembership(3))
+            assertEquals(true,populatedMembers!!.findMember(3)!!.isMemberVIP)
         }
     }
     @Nested
