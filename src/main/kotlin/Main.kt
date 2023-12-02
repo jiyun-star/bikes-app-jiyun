@@ -1,17 +1,12 @@
 import controllers.MemberAPI
 import models.Bike
 import models.Member
-import mu.KotlinLogging
-import persistence.JSONSerializer
-import utils.ScannerInput
-import utils.ScannerInput.readNextChar
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
-import java.io.File
 
 private val memberAPI = MemberAPI()
 fun main() = runMenu()
-fun runMenu(){
+fun runMenu() {
     do {
         when (val option = mainMenu()) {
             1 -> addMember()
@@ -26,12 +21,12 @@ fun runMenu(){
 
             10 -> searchMember()
             0 -> exitApp()
-            else -> System.out.println("Invalid option entered: ${option}")
+            else -> System.out.println("Invalid option entered: $option")
         }
     } while (true)
 }
 fun mainMenu() = readNextInt(
-        """
+    """
 
 ██████╗░██╗██╗░░██╗███████╗░░░░░░░░██████╗░███████╗███╗░░██╗████████╗░█████╗░██╗░░░░░░░░░░░░░░█████╗░██████╗░██████╗░
 ██╔══██╗██║██║░██╔╝██╔════╝░░░░░░░░██╔══██╗██╔════╝████╗░██║╚══██╔══╝██╔══██╗██║░░░░░░░░░░░░░██╔══██╗██╔══██╗██╔══██╗
@@ -57,16 +52,16 @@ fun mainMenu() = readNextInt(
             >
             >  0. EXIT🚪🏃
          > ==>> """.trimMargin(">")
-    )
+)
 
 // ----------------------------------------------
 //  Member menu
 // ----------------------------------------------
-fun addMember(){
+fun addMember() {
     val memberName = readNextLine("Enter a Member name: ")
     val memberContact = readNextInt("Enter a Member contact: ")
     val memberAddress = readNextLine("Enter a Member address: ")
-    val isAdded = memberAPI.add(Member(memberName= memberName , memberContact = memberContact, memberAddress = memberAddress))
+    val isAdded = memberAPI.add(Member(memberName = memberName, memberContact = memberContact, memberAddress = memberAddress))
 
     if (isAdded) {
         println("Added Successfully")
@@ -97,46 +92,47 @@ fun listAllMembers() = println(memberAPI.listMember())
 fun listVIPs() = println(memberAPI.listVIPs())
 fun listNormalMembers() = println(memberAPI.listNormalMembers())
 
-fun updateMembers(){
+fun updateMembers() {
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val id = readNextInt("Enter the index of the member to update: ")
         if (memberAPI.findMember(id) != null) {
-            val memberName = readNextLine("Enter a name:" )
+            val memberName = readNextLine("Enter a name:")
             val memberContact = readNextInt("Enter number: ")
             val memberAddress = readNextLine("Enter address: ")
-            if(memberAPI.updateMember(id, Member(0,memberName,memberContact,memberAddress,false))) {
+            if (memberAPI.updateMember(id, Member(0, memberName, memberContact, memberAddress, false))) {
                 println("$memberName information updated")
-            } else{
+            } else {
                 println("update failed")
             }
-        } else println("There are no member for this index number ")
-
+        } else {
+            println("There are no member for this index number ")
+        }
     }
 }
-fun deleteMember(){
+fun deleteMember() {
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val id = readNextInt("Enter the index of the member to delete: ")
         val memberToDelete = memberAPI.deleteMember(id)
-        if (memberToDelete)
-            println ("deleted successful")
-        else
+        if (memberToDelete) {
+            println("deleted successful")
+        } else {
             println("Delete is not successful")
-
+        }
     }
 }
-fun upgradeMembership(){
+fun upgradeMembership() {
     listNormalMembers()
     if (memberAPI.numberOfNormalMembers() > 0) {
         val id = readNextInt("Enter the index of the member to upgrade: ")
-        if(memberAPI.upgradeMembership(id))
+        if (memberAPI.upgradeMembership(id)) {
             println("VIP enroll succeed")
-        else
+        } else {
             println("Upgrade is not successful")
         }
-    else { println("There are no member") }
-    }
+    } else { println("There are no member") }
+}
 
 fun searchMember() {
     val searchName = readNextLine("Enter the name of number: ")
@@ -146,32 +142,37 @@ fun searchMember() {
     } else {
         println(searchResults)
     }
-
 }
+
 // ----------------------------------------------
 //  bike menu
 // ----------------------------------------------
 private fun addBike() {
     val member: Member? = askUserToChooseMember()
     if (member != null) {
-        if (member.addBike(Bike(
-                bikeColor = readNextLine("bike color(R,G,B):"),
-                bikeSize = readNextInt("bike size(16,18,20): "),
-                startDate = readNextLine("start date(yyyy-mm-dd): "),
-                endDate = readNextLine("end date(yyyy-mm-dd): ")
-            )))
+        if (member.addBike(
+                Bike(
+                        bikeColor = readNextLine("bike color(R,G,B):"),
+                        bikeSize = readNextInt("bike size(16,18,20): "),
+                        startDate = readNextLine("start date(yyyy-mm-dd): "),
+                        endDate = readNextLine("end date(yyyy-mm-dd): ")
+                    )
+            )
+        ) {
             println("Bike rental successed")
-        else println("You didnt get bike")
+        } else {
+            println("You didnt get bike")
+        }
     }
 }
 
 fun extendBike() {
     val member: Member? = askUserToChooseMember()
-    if (member != null){
+    if (member != null) {
         val bike: Bike? = askUserToChooseBike(member)
-        if(bike != null) {
+        if (bike != null) {
             val newEndDate = readNextLine("Enter the new delay date(yyyy-mm-dd): ")
-            if (member.update(bike.bikeId, Bike(bike.bikeId,bike.bikeColor,bike.bikeSize,bike.startDate, endDate = newEndDate))) {
+            if (member.update(bike.bikeId, Bike(bike.bikeId, bike.bikeColor, bike.bikeSize, bike.startDate, endDate = newEndDate))) {
                 println("Bike got delayed")
             } else {
                 println("Failed")
@@ -192,10 +193,8 @@ fun returnBike() {
                 println("Bike returned failed")
             }
         }
-
     }
 }
-
 
 // ----------------------------------------------
 //  helper
@@ -206,12 +205,13 @@ private fun askUserToChooseMember(): Member? {
         val member = memberAPI.findMember(readNextInt("Enter the member id: "))
         if (member != null) {
             return member
+        } else {
+            println("Member is not valid")
         }
-        else println("Member is not valid")
     }
     return null
 }
-private fun askUserToChooseBike(member: Member) : Bike? {
+private fun askUserToChooseBike(member: Member): Bike? {
     if (member.numberOfBikes() > 0) {
         print(member.listBikes())
         return member.findOne(readNextInt("\nEnter the id of the bike: "))

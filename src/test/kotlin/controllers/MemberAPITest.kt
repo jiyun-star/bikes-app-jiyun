@@ -1,10 +1,13 @@
 package controllers
 
 import models.Member
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 class MemberAPITest {
 
     private var southamerica: Member? = null
@@ -21,9 +24,9 @@ class MemberAPITest {
         spainbeach = Member(1, "Akane", 83524343, "Kilkenny", false)
         earthquate = Member(2, "Haley", 334534544, "Waterford", true)
         testing = Member(3, "Tom", 90999954, "Dublin", false)
-        school = Member(4, "samsung", 34543533, "Galway", false)
+        school = Member(4, "Samsung", 34543533, "Galway", false)
 
-        //adding 5 Member to the Members api
+        // adding 5 Member to the Members api
         populatedMembers!!.add(southamerica!!)
         populatedMembers!!.add(spainbeach!!)
         populatedMembers!!.add(earthquate!!)
@@ -41,9 +44,10 @@ class MemberAPITest {
         populatedMembers = null
         emptyMembers = null
     }
-    //////////////////////////////
-    ///////CRUD JUNIT TESTING/////
-    //////////////////////////////
+
+    // ////////////////////////////
+    // /////CRUD JUNIT TESTING/////
+    // ////////////////////////////
     @Nested
     inner class AddMembers {
         @Test
@@ -72,13 +76,15 @@ class MemberAPITest {
             assertEquals(0, emptyMembers!!.numberOfMembers())
             assertTrue(emptyMembers!!.listMember().lowercase().contains("no members stored"))
         }
+
         @Test
         fun `listVIPs returns No Members Stored message when ArrayList is empty`() {
             assertEquals(0, emptyMembers!!.numberOfMembers())
             assertTrue(emptyMembers!!.listVIPs().lowercase().contains("no members stored"))
         }
+
         @Test
-        fun `listMembers returns No Members Stored message when ArrayList is empty`(){
+        fun `listMembers returns No Members Stored message when ArrayList is empty`() {
             assertEquals(0, emptyMembers!!.numberOfMembers())
             assertTrue(emptyMembers!!.listNormalMembers().lowercase().contains("no members stored"))
         }
@@ -91,8 +97,9 @@ class MemberAPITest {
             assertTrue(membersString.contains("kane"))
             assertTrue(membersString.contains("Haley"))
             assertTrue(membersString.contains("Tom"))
-            assertTrue(membersString.contains("samsung"))
+            assertTrue(membersString.contains("Samsung"))
         }
+
         @Test
         fun `listVIPs returns Members when ArrayList has Members stored`() {
             assertEquals(2, populatedMembers!!.numberOfVIPs())
@@ -103,6 +110,7 @@ class MemberAPITest {
             assertFalse(vipMembersString.contains("Tom"))
             assertFalse(vipMembersString.contains("sasung"))
         }
+
         @Test
         fun `listNormalMembers returns Members when ArrayList has Members stored`() {
             assertEquals(3, populatedMembers!!.numberOfNormalMembers())
@@ -111,7 +119,7 @@ class MemberAPITest {
             assertTrue(normalMembersString.contains("Akane"))
             assertFalse(normalMembersString.contains("Haley"))
             assertTrue(normalMembersString.contains("Tom"))
-            assertTrue(normalMembersString.contains("samsung"))
+            assertTrue(normalMembersString.contains("Samsung"))
         }
     }
 
@@ -123,83 +131,89 @@ class MemberAPITest {
             assertFalse(populatedMembers!!.updateMember(-3, Member(2, "Nani", 2324234, "South", false)))
             assertFalse(emptyMembers!!.updateMember(0, Member(2, "Jamie", 2423423, "North", false)))
         }
-        @Test
-        fun `updating a member that exists returns true and updates`(){
-            assertEquals(school,populatedMembers!!.findMember(4))
-            assertEquals("Samsung",populatedMembers!!.findMember(4)!!.memberName)
-            assertEquals(34543533,populatedMembers!!.findMember(4)!!.memberContact)
-            assertEquals("Galway",populatedMembers!!.findMember(4)!!.memberAddress)
 
-            assertTrue(populatedMembers!!.updateMember(4,Member(4,"Samsam",103030,"Wexford")))
-            assertEquals("Samsam", populatedMembers!!.findMember(4)!!.memberName)
-            assertEquals(103030,populatedMembers!!.findMember(4)!!.memberContact)
-            assertEquals("Wexford",populatedMembers!!.findMember(4)!!.memberAddress)
-        }
         @Test
-        fun `upgrading membership for normalmember`(){
-            assertEquals(testing,populatedMembers!!.findMember(3))
-            assertEquals(false,populatedMembers!!.findMember(3)!!.isMemberVIP)
+        fun `updating a member that exists returns true and updates`() {
+            assertEquals(school, populatedMembers!!.findMember(4))
+            assertEquals("Samsung", populatedMembers!!.findMember(4)!!.memberName)
+            assertEquals(34543533, populatedMembers!!.findMember(4)!!.memberContact)
+            assertEquals("Galway", populatedMembers!!.findMember(4)!!.memberAddress)
+
+            assertTrue(populatedMembers!!.updateMember(4, Member(4, "Samsam", 103030, "Wexford")))
+            assertEquals("Samsam", populatedMembers!!.findMember(4)!!.memberName)
+            assertEquals(103030, populatedMembers!!.findMember(4)!!.memberContact)
+            assertEquals("Wexford", populatedMembers!!.findMember(4)!!.memberAddress)
+        }
+
+        @Test
+        fun `upgrading membership for normalmember`() {
+            assertEquals(testing, populatedMembers!!.findMember(3))
+            assertEquals(false, populatedMembers!!.findMember(3)!!.isMemberVIP)
             assertTrue(populatedMembers!!.upgradeMembership(3))
-            assertEquals(true,populatedMembers!!.findMember(3)!!.isMemberVIP)
+            assertEquals(true, populatedMembers!!.findMember(3)!!.isMemberVIP)
         }
     }
+
     @Nested
     inner class DeleteMembers {
         @Test
-        fun `deleting member that does not exist, returns null`() {
-            assertNull(emptyMembers!!.deleteMember(1))
-            assertNull(populatedMembers!!.deleteMember(-2))
-            assertNull(populatedMembers!!.deleteMember(6))
+        fun `deleting member that does not exist, returns false`() {
+            assertFalse(emptyMembers!!.deleteMember(2))
+            assertFalse(populatedMembers!!.deleteMember(-2))
+            assertFalse(populatedMembers!!.deleteMember(6))
         }
+
         @Test
-        fun `deleting member that exists delete`(){
+        fun `deleting member that exists delete`() {
             assertEquals(5, populatedMembers!!.numberOfMembers())
             assertTrue(populatedMembers!!.deleteMember(1))
             assertEquals(4, populatedMembers!!.numberOfMembers())
             assertTrue(populatedMembers!!.deleteMember(2))
             assertEquals(3, populatedMembers!!.numberOfMembers())
-
         }
-
     }
-    ///////////////////
-    //counting method//
-    ///////////////////
+
+    // /////////////////
+    // counting method//
+    // /////////////////
     @Nested
     inner class CountingMethods {
         @Test
         fun numberOfMembersCalculatedCorrectly() {
-            assertEquals(5,populatedMembers!!.numberOfMembers())
-            assertEquals(0,emptyMembers!!.numberOfMembers())
+            assertEquals(5, populatedMembers!!.numberOfMembers())
+            assertEquals(0, emptyMembers!!.numberOfMembers())
         }
+
         @Test
         fun numberOfVIPsCalculatedCorrectly() {
-            assertEquals(2,populatedMembers!!.numberOfVIPs())
-            assertEquals(0,emptyMembers!!.numberOfVIPs())
+            assertEquals(2, populatedMembers!!.numberOfVIPs())
+            assertEquals(0, emptyMembers!!.numberOfVIPs())
         }
+
         @Test
         fun numberOfNormalMembersCalculatedCorrectly() {
-            assertEquals(3,populatedMembers!!.numberOfNormalMembers())
-            assertEquals(0,emptyMembers!!.numberOfNormalMembers())
-
+            assertEquals(3, populatedMembers!!.numberOfNormalMembers())
+            assertEquals(0, emptyMembers!!.numberOfNormalMembers())
         }
     }
-    //////////////////
-    //search methods//
-    //////////////////
+
+    // ////////////////
+    // search methods//
+    // ////////////////
     @Nested
     inner class SearchMethods {
         @Test
-        fun `search members by name returns no members when no members with that name exist`(){
-            assertEquals(5,populatedMembers!!.numberOfMembers())
+        fun `search members by name returns no members when no members with that name exist`() {
+            assertEquals(5, populatedMembers!!.numberOfMembers())
             val searchResults = populatedMembers!!.searchMembersByName("Nobody")
             assertTrue(searchResults.isEmpty())
-            assertEquals(0,emptyMembers!!.numberOfMembers())
+            assertEquals(0, emptyMembers!!.numberOfMembers())
             assertTrue(emptyMembers!!.searchMembersByName("").isEmpty())
         }
+
         @Test
-        fun `search members by name returns members when members with that name exist`(){
-            assertEquals(5,populatedMembers!!.numberOfMembers())
+        fun `search members by name returns members when members with that name exist`() {
+            assertEquals(5, populatedMembers!!.numberOfMembers())
             var searchResults = populatedMembers!!.searchMembersByName("Jane")
             assertTrue(searchResults.contains("Jane"))
             assertFalse(searchResults.contains("Tom"))
@@ -207,7 +221,6 @@ class MemberAPITest {
             assertTrue(searchResults.contains("Jane"))
             assertTrue(searchResults.contains("Akane"))
             assertFalse(searchResults.contains("Tom"))
-
         }
     }
 }
