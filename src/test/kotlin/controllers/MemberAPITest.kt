@@ -162,4 +162,26 @@ class MemberAPITest {
         }
 
     }
+    ///////////////////
+    //counting method//
+    ///////////////////
+    @Nested
+    inner class CountingMethods {
+        @Test
+        fun numberOfMembersCalculatedCorrectly() {
+            assertEquals(5,populatedMembers!!.numberOfMembers())
+            assertEquals(0,emptyMembers!!.numberOfMembers())
+        }
+        @Test
+        fun numberOfVIPsCalculatedCorrectly() {
+            assertEquals(2,populatedMembers!!.numberOfVIPs())
+            assertEquals(0,emptyMembers!!.numberOfVIPs())
+        }
+        @Test
+        fun numberOfNormalMembersCalculatedCorrectly() {
+            assertEquals(3,populatedMembers!!.numberOfNormalMembers())
+            assertEquals(0,emptyMembers!!.numberOfNormalMembers())
+
+        }
+    }
 }
