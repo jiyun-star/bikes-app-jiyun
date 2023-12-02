@@ -184,4 +184,30 @@ class MemberAPITest {
 
         }
     }
+    //////////////////
+    //search methods//
+    //////////////////
+    @Nested
+    inner class SearchMethods {
+        @Test
+        fun `search members by name returns no members when no members with that name exist`(){
+            assertEquals(5,populatedMembers!!.numberOfMembers())
+            val searchResults = populatedMembers!!.searchMembersByName("Nobody")
+            assertTrue(searchResults.isEmpty())
+            assertEquals(0,emptyMembers!!.numberOfMembers())
+            assertTrue(emptyMembers!!.searchMembersByName("").isEmpty())
+        }
+        @Test
+        fun `search members by name returns members when members with that name exist`(){
+            assertEquals(5,populatedMembers!!.numberOfMembers())
+            var searchResults = populatedMembers!!.searchMembersByName("Jane")
+            assertTrue(searchResults.contains("Jane"))
+            assertFalse(searchResults.contains("Tom"))
+            searchResults = populatedMembers!!.searchMembersByName("ane")
+            assertTrue(searchResults.contains("Jane"))
+            assertTrue(searchResults.contains("Akane"))
+            assertFalse(searchResults.contains("Tom"))
+
+        }
+    }
 }
