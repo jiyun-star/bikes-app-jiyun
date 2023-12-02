@@ -59,7 +59,9 @@ fun mainMenu() = readNextInt(
          > ==>> """.trimMargin(">")
     )
 
-///////////////////Member menu/////////////////////
+// ----------------------------------------------
+//  Member menu
+// ----------------------------------------------
 fun addMember(){
     val memberName = readNextLine("Enter a Member name: ")
     val memberContact = readNextInt("Enter a Member contact: ")
@@ -146,7 +148,9 @@ fun searchMember() {
     }
 
 }
-//////////////////bike menu////////////////
+// ----------------------------------------------
+//  bike menu
+// ----------------------------------------------
 private fun addBike() {
     val member: Member? = askUserToChooseMember()
     if (member != null) {
@@ -193,12 +197,16 @@ fun returnBike() {
 }
 
 
-//////////////helper
+// ----------------------------------------------
+//  helper
+// ----------------------------------------------
 private fun askUserToChooseMember(): Member? {
     listMembers()
     if (memberAPI.numberOfMembers() > 0) {
         val member = memberAPI.findMember(readNextInt("Enter the member id: "))
-        if (member != null) return member
+        if (member != null) {
+            return member
+        }
         else println("Member is not valid")
     }
     return null
