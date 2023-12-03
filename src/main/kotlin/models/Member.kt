@@ -46,7 +46,9 @@ data class Member(
         } else {
             utils.Utilities.formatSetString(bikes)
         }
-
+    // ----------------------------------------------
+    //  make print better with emojis
+    // ----------------------------------------------
     override fun toString(): String {
         val vip = if (isMemberVIP) "✨" else ' '
         return "$vip$memberName$vip ☎($memberContact),🏠︎($memberAddress) \n ${listBikes()}"
