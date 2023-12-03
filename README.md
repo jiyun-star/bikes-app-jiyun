@@ -16,4 +16,4 @@ Shortly, this is an app that manages members and bike with menu console driven a
 I used all of the lecturer's lab notes on the tutor.dev website. When I couldn't understand the text, I watched ppt file or youtube video that lecturer uploaded together.
 sometimes, when the app didn't work and had error, i searched for the problem on google.
 ## Project Authors / Contributors
-jiyun kwon
+Jiyun Kwon
