@@ -150,21 +150,27 @@ fun searchMember() {
 private fun addBike() {
     val member: Member? = askUserToChooseMember()
     if (member != null) {
-        if (member.addBike(
+        if((!member.isMemberVIP)&&(member.bikes.isEmpty())) {
+         member.addBike(
                 Bike(
-                        bikeColor = readNextLine("bike color(R,G,B):"),
-                        bikeSize = readNextInt("bike size(16,18,20): "),
-                        startDate = readNextLine("start date(yyyy-mm-dd): "),
-                        endDate = readNextLine("end date(yyyy-mm-dd): ")
-                    )
-            )
-        ) {
-            println("Bike rental successed")
-        } else {
-            println("You didnt get bike")
-        }
-    }
+                    bikeColor = readNextLine("bike color(R,G,B):"),
+                    bikeSize = readNextInt("bike size(16,18,20): "),
+                    startDate = readNextLine("start date(yyyy-mm-dd): "),
+                    endDate = readNextLine("end date(yyyy-mm-dd): ")
+                ))
+        } else if ((member.isMemberVIP)&&(member.bikes.count()<3)) {
+            member.addBike(
+                Bike(
+                    bikeColor = readNextLine("bike color(R,G,B):"),
+                    bikeSize = readNextInt("bike size(16,18,20): "),
+                    startDate = readNextLine("start date(yyyy-mm-dd): "),
+                    endDate = readNextLine("end date(yyyy-mm-dd): ")
+                ))
+        } else println("upgrade your membership or return the bikes. (member - max 1 bike, vip - max 3 bikes)")
+    } else println("You can't have bike")
 }
+
+
 
 fun extendBike() {
     val member: Member? = askUserToChooseMember()
